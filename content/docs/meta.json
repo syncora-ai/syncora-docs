@@ -1,0 +1,20 @@
+{
+  "pages": [
+    "index",
+    "quick-start",
+    "concepts",
+    "platform-overview",
+    "---",
+    "ai-docs",
+    "data-connectors",
+    "data-generation",
+    "contribute-earn",
+    "---",
+    "api-key-generation",
+    "sdk-usage",
+    "installation",
+    "features",
+    "./features/sdk",
+    "./features/api"
+  ]
+}

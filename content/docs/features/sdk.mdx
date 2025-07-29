@@ -1,0 +1,654 @@
+---
+title: SDK installation
+description: Install and set up Syncora SDKs for your platform
+group: DEVELOPMENT
+---
+
+# SDK installation
+
+Get started with Syncora SDKs for your preferred programming language and platform.
+
+## JavaScript/TypeScript SDK
+
+### Prerequisites
+
+- Node.js 16+ or modern browser
+- npm, yarn, or pnpm package manager
+- Syncora API key
+
+### Installation
+
+**Using npm:**
+
+```bash
+npm install @syncora/sdk
+```
+
+**Using yarn:**
+
+```bash
+yarn add @syncora/sdk
+```
+
+**Using pnpm:**
+
+```bash
+pnpm add @syncora/sdk
+```
+
+### Basic Setup
+
+```javascript
+import { SyncoraClient } from "@syncora/sdk";
+
+const client = new SyncoraClient({
+  apiKey: "your-api-key-here",
+});
+```
+
+### Environment Variables
+
+**For Node.js applications:**
+
+```bash
+# .env file
+SYNCORA_API_KEY=your-api-key-here
+```
+
+```javascript
+// app.js
+import { SyncoraClient } from "@syncora/sdk";
+
+const client = new SyncoraClient({
+  apiKey: process.env.SYNCORA_API_KEY,
+});
+```
+
+**For browser applications:**
+
+```javascript
+// Use environment variables in build process
+const client = new SyncoraClient({
+  apiKey: process.env.REACT_APP_SYNCORA_API_KEY // for Create React App
+  // or
+  apiKey: import.meta.env.VITE_SYNCORA_API_KEY // for Vite
+});
+```
+
+### TypeScript Support
+
+The SDK includes full TypeScript definitions:
+
+```typescript
+import { SyncoraClient, GenerateDataOptions, Dataset } from "@syncora/sdk";
+
+const client = new SyncoraClient({
+  apiKey: process.env.SYNCORA_API_KEY!,
+});
+
+interface User {
+  id: string;
+  name: string;
+  email: string;
+  age: number;
+}
+
+const options: GenerateDataOptions = {
+  schema: {
+    users: {
+      fields: {
+        id: "uuid",
+        name: "string",
+        email: "email",
+        age: "number",
+      },
+      count: 1000,
+    },
+  },
+};
+
+const dataset: Dataset = await client.generateData(options);
+```
+
+## Python SDK
+
+### Prerequisites
+
+- Python 3.8+
+- pip package manager
+- Syncora API key
+
+### Installation
+
+**Using pip:**
+
+```bash
+pip install syncora-sdk
+```
+
+**Using conda:**
+
+```bash
+conda install -c conda-forge syncora-sdk
+```
+
+**Using poetry:**
+
+```bash
+poetry add syncora-sdk
+```
+
+### Basic Setup
+
+```python
+from syncora import SyncoraClient
+
+client = SyncoraClient(api_key="your-api-key-here")
+```
+
+### Environment Variables
+
+**Using python-dotenv:**
+
+```bash
+# .env file
+SYNCORA_API_KEY=your-api-key-here
+```
+
+```python
+import os
+from dotenv import load_dotenv
+from syncora import SyncoraClient
+
+load_dotenv()
+
+client = SyncoraClient(api_key=os.getenv("SYNCORA_API_KEY"))
+```
+
+### Type Hints
+
+```python
+from typing import Dict, Any
+from syncora import SyncoraClient, Dataset
+
+client = SyncoraClient(api_key="your-api-key")
+
+schema: Dict[str, Any] = {
+    "users": {
+        "fields": {
+            "id": "uuid",
+            "name": "string",
+            "email": "email",
+            "age": "number"
+        },
+        "count": 1000
+    }
+}
+
+dataset: Dataset = client.generate_data(schema)
+```
+
+## React Integration
+
+### Installation
+
+```bash
+npm install @syncora/sdk
+```
+
+### Basic Component
+
+```jsx
+import React, { useState } from "react";
+import { SyncoraClient } from "@syncora/sdk";
+
+function DataGenerator() {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+
+  const generateData = async () => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const client = new SyncoraClient({
+        apiKey: process.env.REACT_APP_SYNCORA_API_KEY,
+      });
+
+      const result = await client.generateData({
+        schema: {
+          users: {
+            fields: {
+              name: "string",
+              email: "email",
+              age: "number",
+            },
+            count: 100,
+          },
+        },
+      });
+
+      setData(result);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <button
+        onClick={generateData}
+        disabled={loading}
+        className="px-4 py-2 bg-blue-500 text-white rounded"
+      >
+        {loading ? "Generating..." : "Generate Data"}
+      </button>
+
+      {error && (
+        <div className="mt-4 p-4 bg-red-100 text-red-700 rounded">
+          Error: {error}
+        </div>
+      )}
+
+      {data && (
+        <div className="mt-4">
+          <h3>Generated Data:</h3>
+          <pre className="bg-gray-100 p-4 rounded overflow-auto">
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default DataGenerator;
+```
+
+### Custom Hook
+
+```jsx
+import { useState, useCallback } from "react";
+import { SyncoraClient } from "@syncora/sdk";
+
+export function useSyncora() {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const generateData = useCallback(async (schema) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const client = new SyncoraClient({
+        apiKey: process.env.REACT_APP_SYNCORA_API_KEY,
+      });
+
+      const result = await client.generateData({ schema });
+      return result;
+    } catch (err) {
+      setError(err.message);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { generateData, loading, error };
+}
+```
+
+## Next.js Integration
+
+### Installation
+
+```bash
+npm install @syncora/sdk
+```
+
+### API Route
+
+```javascript
+// pages/api/generate-data.js
+import { SyncoraClient } from "@syncora/sdk";
+
+export default async function handler(req, res) {
+  if (req.method !== "POST") {
+    return res.status(405).json({ message: "Method not allowed" });
+  }
+
+  try {
+    const client = new SyncoraClient({
+      apiKey: process.env.SYNCORA_API_KEY,
+    });
+
+    const { schema } = req.body;
+    const dataset = await client.generateData({ schema });
+
+    res.status(200).json(dataset);
+  } catch (error) {
+    res.status(500).json({
+      error: error.message,
+    });
+  }
+}
+```
+
+### Client Component
+
+```jsx
+// components/DataGenerator.js
+"use client";
+
+import { useState } from "react";
+
+export default function DataGenerator() {
+  const [loading, setLoading] = useState(false);
+  const [data, setData] = useState(null);
+
+  const generateData = async () => {
+    setLoading(true);
+
+    try {
+      const response = await fetch("/api/generate-data", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          schema: {
+            users: {
+              fields: {
+                name: "string",
+                email: "email",
+                age: "number",
+              },
+              count: 100,
+            },
+          },
+        }),
+      });
+
+      const result = await response.json();
+      setData(result);
+    } catch (error) {
+      console.error("Generation failed:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <button onClick={generateData} disabled={loading}>
+        {loading ? "Generating..." : "Generate Data"}
+      </button>
+      {data && <pre>{JSON.stringify(data, null, 2)}</pre>}
+    </div>
+  );
+}
+```
+
+## Vue.js Integration
+
+### Installation
+
+```bash
+npm install @syncora/sdk
+```
+
+### Component
+
+```vue
+<template>
+  <div>
+    <button
+      @click="generateData"
+      :disabled="loading"
+      class="px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      {{ loading ? "Generating..." : "Generate Data" }}
+    </button>
+
+    <div v-if="error" class="mt-4 p-4 bg-red-100 text-red-700 rounded">
+      Error: {{ error }}
+    </div>
+
+    <div v-if="data" class="mt-4">
+      <h3>Generated Data:</h3>
+      <pre class="bg-gray-100 p-4 rounded overflow-auto">
+        {{ JSON.stringify(data, null, 2) }}
+      </pre>
+    </div>
+  </div>
+</template>
+
+<script>
+import { SyncoraClient } from "@syncora/sdk";
+
+export default {
+  name: "DataGenerator",
+  data() {
+    return {
+      loading: false,
+      data: null,
+      error: null,
+    };
+  },
+  methods: {
+    async generateData() {
+      this.loading = true;
+      this.error = null;
+
+      try {
+        const client = new SyncoraClient({
+          apiKey: process.env.VUE_APP_SYNCORA_API_KEY,
+        });
+
+        this.data = await client.generateData({
+          schema: {
+            users: {
+              fields: {
+                name: "string",
+                email: "email",
+                age: "number",
+              },
+              count: 100,
+            },
+          },
+        });
+      } catch (err) {
+        this.error = err.message;
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+};
+</script>
+```
+
+## Angular Integration
+
+### Installation
+
+```bash
+npm install @syncora/sdk
+```
+
+### Service
+
+```typescript
+// services/syncora.service.ts
+import { Injectable } from "@angular/core";
+import { SyncoraClient } from "@syncora/sdk";
+import { environment } from "../environments/environment";
+
+@Injectable({
+  providedIn: "root",
+})
+export class SyncoraService {
+  private client: SyncoraClient;
+
+  constructor() {
+    this.client = new SyncoraClient({
+      apiKey: environment.syncoraApiKey,
+    });
+  }
+
+  async generateData(schema: any) {
+    return await this.client.generateData({ schema });
+  }
+}
+```
+
+### Component
+
+```typescript
+// components/data-generator.component.ts
+import { Component } from "@angular/core";
+import { SyncoraService } from "../services/syncora.service";
+
+@Component({
+  selector: "app-data-generator",
+  template: `
+    <button
+      (click)="generateData()"
+      [disabled]="loading"
+      class="px-4 py-2 bg-blue-500 text-white rounded"
+    >
+      {{ loading ? "Generating..." : "Generate Data" }}
+    </button>
+
+    <div *ngIf="error" class="mt-4 p-4 bg-red-100 text-red-700 rounded">
+      Error: {{ error }}
+    </div>
+
+    <div *ngIf="data" class="mt-4">
+      <h3>Generated Data:</h3>
+      <pre class="bg-gray-100 p-4 rounded overflow-auto">
+        {{ data | json }}
+      </pre
+      >
+    </div>
+  `,
+})
+export class DataGeneratorComponent {
+  loading = false;
+  data: any = null;
+  error: string | null = null;
+
+  constructor(private syncoraService: SyncoraService) {}
+
+  async generateData() {
+    this.loading = true;
+    this.error = null;
+
+    try {
+      this.data = await this.syncoraService.generateData({
+        users: {
+          fields: {
+            name: "string",
+            email: "email",
+            age: "number",
+          },
+          count: 100,
+        },
+      });
+    } catch (err: any) {
+      this.error = err.message;
+    } finally {
+      this.loading = false;
+    }
+  }
+}
+```
+
+## Configuration Options
+
+### Client Configuration
+
+```javascript
+const client = new SyncoraClient({
+  apiKey: "your-api-key",
+  timeout: 30000, // 30 seconds
+  retries: 3,
+  baseUrl: "https://api.syncora.ai/v1", // optional
+  headers: {
+    "User-Agent": "MyApp/1.0",
+  },
+});
+```
+
+### Environment-Specific Configuration
+
+```javascript
+// config/syncora.js
+const config = {
+  development: {
+    apiKey: process.env.SYNCORA_API_KEY,
+    timeout: 60000,
+    retries: 5,
+  },
+  production: {
+    apiKey: process.env.SYNCORA_API_KEY,
+    timeout: 30000,
+    retries: 3,
+  },
+  test: {
+    apiKey: "test-api-key",
+    timeout: 5000,
+    retries: 1,
+  },
+};
+
+export const syncoraConfig = config[process.env.NODE_ENV || "development"];
+```
+
+## Troubleshooting
+
+### Common Issues
+
+**Module not found errors:**
+
+```bash
+# Clear cache and reinstall
+rm -rf node_modules package-lock.json
+npm install
+```
+
+**API key not working:**
+
+- Verify the API key is correct
+- Check if the key has the required permissions
+- Ensure the key is not expired
+
+**Network errors:**
+
+- Check your internet connection
+- Verify firewall settings
+- Try increasing timeout values
+
+**TypeScript errors:**
+
+```bash
+# Install types if needed
+npm install @types/node
+```
+
+### Getting Help
+
+- **Documentation**: Check our [API Reference](/features/api)
+- **Examples**: See [Integration Examples](/features#integration-examples)
+- **Community**: Join our [Discord](https://discord.gg/syncora)
+- **Support**: Contact [support@syncora.ai](mailto:support@syncora.ai)
+
+## Next Steps
+
+- **Generate your first dataset** with our [Quick start](/quick-start) guide
+- **Explore advanced features** in our [Features](/features) section
+- **Learn best practices** for optimal performance
+- **Check out our [API Reference](/features/api)** for complete documentation

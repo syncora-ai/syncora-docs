@@ -1,0 +1,234 @@
+---
+title: Best practices
+description: Guidelines for optimal synthetic data generation
+group: INTRODUCTION
+---
+
+# Best practices
+
+Follow these guidelines to ensure you get the best results from Syncora's synthetic data generation.
+
+## Data Preparation
+
+### Clean Your Source Data
+
+- **Remove duplicates** and inconsistent records
+- **Handle missing values** appropriately
+- **Standardize formats** (dates, phone numbers, etc.)
+- **Validate data types** and ranges
+
+### Document Your Schema
+
+```javascript
+{
+  users: {
+    fields: {
+      id: { type: 'uuid', primary: true },
+      name: { type: 'string', minLength: 2, maxLength: 50 },
+      email: { type: 'email', unique: true },
+      age: { type: 'number', min: 13, max: 120 },
+      created_at: { type: 'datetime', default: 'now' }
+    }
+  }
+}
+```
+
+### Define Business Rules
+
+- **Constraints**: Age must be positive, email must be valid
+- **Relationships**: User orders must reference valid user IDs
+- **Dependencies**: Premium users must have verified email
+
+## Generation Strategy
+
+### Start Small
+
+1. **Begin with 100-1000 records** to validate quality
+2. **Test with your applications** before scaling
+3. **Iterate on schema** based on results
+4. **Gradually increase volume** once satisfied
+
+### Validate Early
+
+- **Statistical comparison** with original data
+- **Business logic testing** in your applications
+- **Edge case verification** for rare scenarios
+- **Performance testing** with your systems
+
+### Monitor Quality
+
+- **Distribution analysis** of generated data
+- **Correlation preservation** between variables
+- **Data format validation** (emails, phone numbers)
+- **Referential integrity** checks
+
+## Privacy & Security
+
+### Data Anonymization
+
+- **Remove PII** before analysis (names, addresses, SSNs)
+- **Hash sensitive fields** that need to be preserved
+- **Use synthetic identifiers** instead of real IDs
+- **Apply differential privacy** for sensitive datasets
+
+### Access Control
+
+- **Limit API key permissions** to minimum required
+- **Rotate API keys** regularly
+- **Monitor usage patterns** for anomalies
+- **Use environment variables** for API keys
+
+### Compliance Considerations
+
+- **GDPR compliance** for EU data
+- **HIPAA requirements** for healthcare data
+- **Industry-specific regulations** (PCI DSS, SOX)
+- **Data retention policies** for generated data
+
+## Performance Optimization
+
+### Efficient Schema Design
+
+```javascript
+// Good: Optimized for generation
+{
+  users: {
+    fields: {
+      id: 'uuid',
+      name: 'string',
+      email: 'email'
+    },
+    count: 10000
+  }
+}
+
+// Better: With constraints and relationships
+{
+  users: {
+    fields: {
+      id: 'uuid',
+      name: 'string',
+      email: 'email',
+      created_at: 'datetime'
+    },
+    constraints: {
+      email: 'unique',
+      created_at: 'after:2020-01-01'
+    },
+    count: 10000
+  }
+}
+```
+
+### Batch Processing
+
+- **Generate in batches** of 1000-10000 records
+- **Use streaming** for large datasets
+- **Implement retry logic** for failed requests
+- **Monitor memory usage** during generation
+
+### Caching Strategy
+
+- **Cache generated datasets** for reuse
+- **Store schema definitions** for quick access
+- **Implement versioning** for schema changes
+- **Use CDN** for large file downloads
+
+## Integration Best Practices
+
+### SDK Usage
+
+```javascript
+import { SyncoraClient } from "@syncora/sdk";
+
+const client = new SyncoraClient({
+  apiKey: process.env.SYNCORA_API_KEY,
+  timeout: 30000,
+  retries: 3,
+});
+
+// Handle errors gracefully
+try {
+  const dataset = await client.generateData(schema);
+  console.log("Generated:", dataset.recordCount, "records");
+} catch (error) {
+  console.error("Generation failed:", error.message);
+}
+```
+
+### Error Handling
+
+- **Validate API responses** before processing
+- **Implement exponential backoff** for retries
+- **Log errors** with sufficient context
+- **Provide user-friendly error messages**
+
+### Testing Strategy
+
+- **Unit tests** for schema validation
+- **Integration tests** with your applications
+- **Performance tests** for large datasets
+- **Regression tests** for schema changes
+
+## Quality Assurance
+
+### Data Validation
+
+```javascript
+// Validate generated data
+const validationRules = {
+  users: {
+    email: (email) => email.includes("@"),
+    age: (age) => age >= 13 && age <= 120,
+    name: (name) => name.length >= 2,
+  },
+};
+
+const isValid = validateDataset(dataset, validationRules);
+```
+
+### Statistical Validation
+
+- **Distribution tests** (Kolmogorov-Smirnov, Chi-square)
+- **Correlation analysis** between variables
+- **Outlier detection** and handling
+- **Data completeness** checks
+
+### Business Logic Testing
+
+- **Test with real applications** and workflows
+- **Verify data relationships** and constraints
+- **Check edge cases** and boundary conditions
+- **Validate data formats** and types
+
+## Troubleshooting
+
+### Common Issues
+
+#### Poor Data Quality
+
+- **Check source data** for inconsistencies
+- **Refine schema** with better constraints
+- **Increase sample size** for better patterns
+- **Add more context** to generation rules
+
+#### Performance Problems
+
+- **Reduce batch sizes** for large datasets
+- **Optimize schema** by removing unnecessary fields
+- **Use streaming** for very large datasets
+- **Implement caching** for repeated requests
+
+#### API Errors
+
+- **Check API key** validity and permissions
+- **Verify schema** syntax and structure
+- **Monitor rate limits** and quotas
+- **Review error logs** for specific issues
+
+### Getting Help
+
+- **Check documentation** for common solutions
+- **Review API status** at status.syncora.ai
+- **Contact support** with detailed error information
+- **Join community** forums for peer assistance

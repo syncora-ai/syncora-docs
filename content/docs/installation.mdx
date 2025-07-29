@@ -1,0 +1,84 @@
+---
+title: Installation
+description: Get started with our platform by following these installation guides
+group: SETUP
+---
+
+# Installation
+
+Get started with our platform by following these installation guides.
+
+## Prerequisites
+
+Before installing, ensure you have:
+
+- Node.js 18+ (for JavaScript SDK)
+- Python 3.8+ (for Python SDK)
+- Go 1.19+ (for Go SDK)
+
+## Installation Methods
+
+### NPM (Recommended for JavaScript/TypeScript)
+
+```bash
+npm install @syncora/sdk
+```
+
+### Yarn
+
+```bash
+yarn add @syncora/sdk
+```
+
+### Python (pip)
+
+```bash
+pip install syncora-sdk
+```
+
+### Go (go get)
+
+```bash
+go get github.com/syncora/sdk
+```
+
+## Environment Setup
+
+### 1. Get Your API Key
+
+- Sign up at [syncora.com](https://syncora.com)
+- Navigate to your dashboard
+- Generate a new API key
+
+### 2. Configure Environment Variables
+
+```bash
+# .env file
+SYNCORA_API_KEY=your-api-key-here
+SYNCORA_ENVIRONMENT=production
+```
+
+### 3. Verify Installation
+
+```javascript
+// Test your installation
+import { SyncoraClient } from "@syncora/sdk";
+
+const client = new SyncoraClient({
+  apiKey: process.env.SYNCORA_API_KEY,
+});
+
+console.log("SDK installed successfully!");
+```
+
+## Troubleshooting
+
+### Common Issues
+
+- **API Key not found**: Ensure your API key is correctly set
+- **Network errors**: Check your internet connection
+- **Version conflicts**: Update to the latest SDK version
+
+### Support
+
+If you encounter issues, check our [troubleshooting guide](link-to-troubleshooting) or contact support.

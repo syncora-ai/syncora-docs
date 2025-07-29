@@ -1,0 +1,55 @@
+---
+title: API Key Generation
+description: Generate and manage API keys for secure access to our platform
+group: SETUP
+---
+
+# API Key Generation
+
+Generate and manage API keys for secure access to our platform.
+
+## Creating API Keys
+
+### Step 1: Access the Dashboard
+
+Navigate to your account dashboard and locate the API section.
+
+### Step 2: Generate New Key
+
+Click "Generate New API Key" and configure the following:
+
+- Key name/description
+- Permissions scope
+- Expiration date
+- Rate limits
+
+### Step 3: Secure Storage
+
+Store your API key securely and never share it publicly.
+
+## Key Management
+
+### Viewing Keys
+
+- List all active keys
+- Check usage statistics
+- Monitor rate limits
+
+### Security Best Practices
+
+- Rotate keys regularly
+- Use environment variables
+- Implement proper access controls
+- Monitor for suspicious activity
+
+## Usage Examples
+
+```javascript
+// Using API key in requests
+const response = await fetch("/api/data", {
+  headers: {
+    Authorization: "Bearer YOUR_API_KEY",
+    "Content-Type": "application/json",
+  },
+});
+```

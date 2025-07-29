@@ -1,0 +1,670 @@
+---
+title: API reference
+description: Complete API documentation for Syncora
+group: DEVELOPMENT
+---
+
+# API reference
+
+Complete documentation for Syncora's REST API. All endpoints return JSON responses and use standard HTTP status codes.
+
+## Base URL
+
+```
+https://api.syncora.ai/v1
+```
+
+## Authentication
+
+All API requests require authentication using an API key in the Authorization header:
+
+```bash
+Authorization: Bearer YOUR_API_KEY
+```
+
+### Getting Your API Key
+
+1. Log in to your [Syncora account](https://app.syncora.ai)
+2. Navigate to **Settings** → **API Keys**
+3. Click **"Generate New API Key"**
+4. Copy the generated key and store it securely
+
+## Rate Limits
+
+- **Free tier**: 100 requests per hour
+- **Pro tier**: 1,000 requests per hour
+- **Enterprise**: Custom limits
+
+Rate limit headers are included in responses:
+
+```
+X-RateLimit-Limit: 1000
+X-RateLimit-Remaining: 999
+X-RateLimit-Reset: 1640995200
+```
+
+## Data Generation
+
+### Generate Data
+
+Generate synthetic data based on a schema definition.
+
+**Endpoint:** `POST /datasets`
+
+**Request Body:**
+
+```json
+{
+  "schema": {
+    "users": {
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "email": "email",
+        "age": "number",
+        "created_at": "datetime"
+      },
+      "count": 1000,
+      "constraints": {
+        "age": "min:18, max:100",
+        "email": "unique"
+      }
+    }
+  },
+  "options": {
+    "format": "json",
+    "include_metadata": true
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "ds_1234567890",
+  "status": "completed",
+  "created_at": "2024-01-15T10:30:00Z",
+  "schema": {
+    "users": {
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "email": "email",
+        "age": "number",
+        "created_at": "datetime"
+      },
+      "count": 1000
+    }
+  },
+  "data": {
+    "users": [
+      {
+        "id": "550e8400-e29b-41d4-a716-446655440000",
+        "name": "John Doe",
+        "email": "john.doe@example.com",
+        "age": 32,
+        "created_at": "2024-01-15T10:30:00Z"
+      }
+    ]
+  },
+  "metadata": {
+    "total_records": 1000,
+    "generation_time": 2.5,
+    "quality_score": 0.95
+  }
+}
+```
+
+**cURL Example:**
+
+```bash
+curl -X POST https://api.syncora.ai/v1/datasets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "schema": {
+      "users": {
+        "fields": {
+          "name": "string",
+          "email": "email",
+          "age": "number"
+        },
+        "count": 100
+      }
+    }
+  }'
+```
+
+### Get Dataset Status
+
+Check the status of a data generation job.
+
+**Endpoint:** `GET /datasets/{dataset_id}`
+
+**Response:**
+
+```json
+{
+  "id": "ds_1234567890",
+  "status": "processing",
+  "progress": 75,
+  "created_at": "2024-01-15T10:30:00Z",
+  "estimated_completion": "2024-01-15T10:32:00Z"
+}
+```
+
+### List Datasets
+
+Get a list of your generated datasets.
+
+**Endpoint:** `GET /datasets`
+
+**Query Parameters:**
+
+- `limit` (optional): Number of datasets to return (default: 20, max: 100)
+- `offset` (optional): Number of datasets to skip (default: 0)
+- `status` (optional): Filter by status (pending, processing, completed, failed)
+
+**Response:**
+
+```json
+{
+  "datasets": [
+    {
+      "id": "ds_1234567890",
+      "name": "User Dataset",
+      "status": "completed",
+      "created_at": "2024-01-15T10:30:00Z",
+      "record_count": 1000,
+      "schema_summary": {
+        "tables": ["users"],
+        "total_fields": 5
+      }
+    }
+  ],
+  "pagination": {
+    "total": 150,
+    "limit": 20,
+    "offset": 0,
+    "has_more": true
+  }
+}
+```
+
+### Download Dataset
+
+Download a completed dataset in various formats.
+
+**Endpoint:** `GET /datasets/{dataset_id}/download`
+
+**Query Parameters:**
+
+- `format` (optional): Export format (json, csv, parquet, sql, excel)
+
+**Response Headers:**
+
+```
+Content-Type: application/json
+Content-Disposition: attachment; filename="dataset_1234567890.json"
+```
+
+## Schema Management
+
+### Validate Schema
+
+Validate a schema definition before generation.
+
+**Endpoint:** `POST /schemas/validate`
+
+**Request Body:**
+
+```json
+{
+  "schema": {
+    "users": {
+      "fields": {
+        "id": "uuid",
+        "name": "string",
+        "email": "email"
+      },
+      "count": 100
+    }
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "valid": true,
+  "warnings": [
+    "Field 'email' should have 'unique' constraint for better data quality"
+  ],
+  "estimated_records": 100,
+  "estimated_size_mb": 0.5
+}
+```
+
+### Get Schema Templates
+
+Get predefined schema templates for common use cases.
+
+**Endpoint:** `GET /schemas/templates`
+
+**Response:**
+
+```json
+{
+  "templates": [
+    {
+      "id": "ecommerce",
+      "name": "E-commerce Dataset",
+      "description": "Complete e-commerce dataset with users, products, and orders",
+      "schema": {
+        "users": {
+          "fields": {
+            "id": "uuid",
+            "name": "string",
+            "email": "email",
+            "address": "string"
+          },
+          "count": 1000
+        },
+        "products": {
+          "fields": {
+            "id": "uuid",
+            "name": "string",
+            "price": "number",
+            "category": "string"
+          },
+          "count": 500
+        },
+        "orders": {
+          "fields": {
+            "id": "uuid",
+            "user_id": "reference:users.id",
+            "product_id": "reference:products.id",
+            "quantity": "number",
+            "total": "number"
+          },
+          "count": 2000
+        }
+      }
+    }
+  ]
+}
+```
+
+## Data Connectors
+
+### List Connectors
+
+Get available data connectors.
+
+**Endpoint:** `GET /connectors`
+
+**Response:**
+
+```json
+{
+  "connectors": [
+    {
+      "id": "postgresql",
+      "name": "PostgreSQL",
+      "description": "Connect to PostgreSQL databases",
+      "config_schema": {
+        "host": "string",
+        "port": "number",
+        "database": "string",
+        "username": "string",
+        "password": "string"
+      }
+    },
+    {
+      "id": "s3",
+      "name": "Amazon S3",
+      "description": "Connect to S3 buckets",
+      "config_schema": {
+        "bucket": "string",
+        "region": "string",
+        "access_key": "string",
+        "secret_key": "string"
+      }
+    }
+  ]
+}
+```
+
+### Create Connection
+
+Create a new data connection.
+
+**Endpoint:** `POST /connectors/{connector_id}/connections`
+
+**Request Body:**
+
+```json
+{
+  "name": "My PostgreSQL DB",
+  "config": {
+    "host": "localhost",
+    "port": 5432,
+    "database": "mydb",
+    "username": "user",
+    "password": "password"
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "conn_1234567890",
+  "name": "My PostgreSQL DB",
+  "connector_id": "postgresql",
+  "status": "connected",
+  "created_at": "2024-01-15T10:30:00Z",
+  "tables": [
+    {
+      "name": "users",
+      "columns": [
+        { "name": "id", "type": "uuid" },
+        { "name": "name", "type": "string" },
+        { "name": "email", "type": "string" }
+      ]
+    }
+  ]
+}
+```
+
+### Import Data
+
+Import data from a connected source.
+
+**Endpoint:** `POST /connectors/connections/{connection_id}/import`
+
+**Request Body:**
+
+```json
+{
+  "tables": ["users", "orders"],
+  "options": {
+    "sample_size": 1000,
+    "include_sensitive": false
+  }
+}
+```
+
+**Response:**
+
+```json
+{
+  "import_id": "imp_1234567890",
+  "status": "processing",
+  "tables": [
+    {
+      "name": "users",
+      "record_count": 1000,
+      "sample_data": [
+        {
+          "id": "550e8400-e29b-41d4-a716-446655440000",
+          "name": "John Doe",
+          "email": "john@example.com"
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Account Management
+
+### Get Account Info
+
+Get information about your account.
+
+**Endpoint:** `GET /account`
+
+**Response:**
+
+```json
+{
+  "id": "acc_1234567890",
+  "email": "user@example.com",
+  "plan": "pro",
+  "usage": {
+    "datasets_generated": 150,
+    "records_generated": 50000,
+    "api_calls": 2500
+  },
+  "limits": {
+    "datasets_per_month": 1000,
+    "records_per_month": 1000000,
+    "api_calls_per_hour": 1000
+  },
+  "created_at": "2024-01-01T00:00:00Z"
+}
+```
+
+### Get API Keys
+
+List your API keys.
+
+**Endpoint:** `GET /account/api-keys`
+
+**Response:**
+
+```json
+{
+  "api_keys": [
+    {
+      "id": "key_1234567890",
+      "name": "Production API Key",
+      "created_at": "2024-01-01T00:00:00Z",
+      "last_used": "2024-01-15T10:30:00Z",
+      "permissions": ["read", "write"]
+    }
+  ]
+}
+```
+
+### Create API Key
+
+Generate a new API key.
+
+**Endpoint:** `POST /account/api-keys`
+
+**Request Body:**
+
+```json
+{
+  "name": "Development API Key",
+  "permissions": ["read", "write"]
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "key_1234567890",
+  "name": "Development API Key",
+  "key": "sk_1234567890abcdef...",
+  "created_at": "2024-01-15T10:30:00Z",
+  "permissions": ["read", "write"]
+}
+```
+
+## Error Responses
+
+All errors follow a consistent format:
+
+```json
+{
+  "error": {
+    "code": "INVALID_SCHEMA",
+    "message": "Schema validation failed",
+    "details": {
+      "field": "users.email",
+      "issue": "Invalid email format"
+    }
+  }
+}
+```
+
+### Common Error Codes
+
+- `INVALID_API_KEY`: API key is invalid or expired
+- `RATE_LIMIT_EXCEEDED`: Rate limit exceeded
+- `INVALID_SCHEMA`: Schema validation failed
+- `QUOTA_EXCEEDED`: Account quota exceeded
+- `DATASET_NOT_FOUND`: Dataset not found
+- `CONNECTION_FAILED`: Data connection failed
+- `INVALID_REQUEST`: Invalid request format
+
+## Webhooks
+
+### Create Webhook
+
+Set up webhooks for real-time notifications.
+
+**Endpoint:** `POST /webhooks`
+
+**Request Body:**
+
+```json
+{
+  "url": "https://your-app.com/webhooks/syncora",
+  "events": ["dataset.completed", "dataset.failed"],
+  "secret": "your-webhook-secret"
+}
+```
+
+**Response:**
+
+```json
+{
+  "id": "webhook_1234567890",
+  "url": "https://your-app.com/webhooks/syncora",
+  "events": ["dataset.completed", "dataset.failed"],
+  "status": "active",
+  "created_at": "2024-01-15T10:30:00Z"
+}
+```
+
+### Webhook Payload
+
+When a webhook event occurs, a POST request is sent to your URL:
+
+```json
+{
+  "event": "dataset.completed",
+  "timestamp": "2024-01-15T10:30:00Z",
+  "data": {
+    "dataset_id": "ds_1234567890",
+    "status": "completed",
+    "record_count": 1000
+  },
+  "signature": "sha256=..."
+}
+```
+
+## SDK Libraries
+
+### JavaScript/TypeScript
+
+```bash
+npm install @syncora/sdk
+```
+
+```javascript
+import { SyncoraClient } from "@syncora/sdk";
+
+const client = new SyncoraClient({
+  apiKey: "your-api-key",
+});
+
+const dataset = await client.generateData({
+  schema: {
+    users: {
+      fields: {
+        name: "string",
+        email: "email",
+        age: "number",
+      },
+      count: 1000,
+    },
+  },
+});
+```
+
+### Python
+
+```bash
+pip install syncora-sdk
+```
+
+```python
+from syncora import SyncoraClient
+
+client = SyncoraClient(api_key="your-api-key")
+
+dataset = client.generate_data({
+    "users": {
+        "fields": {
+            "name": "string",
+            "email": "email",
+            "age": "number"
+        },
+        "count": 1000
+    }
+})
+```
+
+## Rate Limiting
+
+When you exceed your rate limit, the API returns:
+
+```json
+{
+  "error": {
+    "code": "RATE_LIMIT_EXCEEDED",
+    "message": "Rate limit exceeded",
+    "retry_after": 3600
+  }
+}
+```
+
+Include the `Retry-After` header value in your retry logic.
+
+## Pagination
+
+List endpoints support pagination using `limit` and `offset` parameters:
+
+```bash
+GET /datasets?limit=20&offset=40
+```
+
+Response includes pagination metadata:
+
+```json
+{
+  "data": [...],
+  "pagination": {
+    "total": 150,
+    "limit": 20,
+    "offset": 40,
+    "has_more": true
+  }
+}
+```
+
+## Next Steps
+
+- **Get started** with our [Quick start](/quick-start) guide
+- **Install the SDK** using our [SDK installation](/features/sdk) guide
+- **Learn best practices** for optimal API usage
+- **Join our community** for support and updates
