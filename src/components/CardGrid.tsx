@@ -116,7 +116,7 @@ export default function CardGrid() {
                   <li key={i} className="relative cursor-pointer group/item">
                     <span className="relative">
                       {item}
-                      <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full transition-all duration-600 group-hover/item:w-full"></span>
+                      <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full transition-all duration-800 group-hover/item:w-full"></span>
                     </span>
                   </li>
                 ))}
@@ -131,7 +131,7 @@ export default function CardGrid() {
       <div className="relative rounded-2xl group card-border-animated">
         <div className="bg-white dark:bg-[#1e1e2f] border border-gray-200 dark:border-[#33344a] rounded-2xl p-6 flex flex-col justify-center items-center text-center shadow-sm self-stretch md:min-h-[570px] relative z-10">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-            👋 Welcome to Syncora
+            Welcome to Syncora
           </h2>
           <p className="text-gray-700 dark:text-gray-300 mb-6">
             Discover how to create privacy-safe, production-ready synthetic data in minutes.

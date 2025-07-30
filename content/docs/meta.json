@@ -1,20 +1,34 @@
 {
   "pages": [
     "index",
-    "quick-start",
-    "concepts",
-    "platform-overview",
-    "---",
-    "ai-docs",
-    "data-connectors",
-    "data-generation",
-    "contribute-earn",
-    "---",
-    "api-key-generation",
-    "sdk-usage",
-    "installation",
-    "features",
-    "./features/sdk",
-    "./features/api"
+    {
+      "type": "category",
+      "title": "Quick Start",
+      "items": [
+        "quick-start",
+        "quick-start/model-creators",
+        "quick-start/data-consumers",
+        "quick-start/fine-tuning"
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Core Concepts",
+      "items": [
+        "concepts",
+        "concepts/data-generation",
+        "concepts/synthetic-models"
+      ]
+    },
+    {
+      "type": "category",
+      "title": "Features",
+      "items": [
+        "features",
+        "features/sdk",
+        "features/api"
+      ]
+    },
+    "contribute-earn"
   ]
 }
