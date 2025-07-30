@@ -1,3 +1,33 @@
 @import 'tailwindcss';
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
+
+@keyframes rotateBorder {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.card-border-animated::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 1rem;
+    padding: 2px;
+    background: linear-gradient(270deg, #60a5fa, #a78bfa, #ec4899, #60a5fa);
+    background-size: 400% 400%;
+    filter: blur(3px);
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.card-border-animated:hover::before {
+    animation: rotateBorder 4s linear infinite;
+    opacity: 1;
+}
+
