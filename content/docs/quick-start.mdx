@@ -1,20 +1,24 @@
 ---
-title: Quick start
+title: Quick Start
 description: Get started with Syncora in minutes
-group: INTRODUCTION
+group: QUICK START
 ---
 
-# Quick start
+import { QuickStart } from '@/components/QuickStart';
+
+<QuickStart />
+
+## Get Started with Syncora
 
 Welcome to Syncora! This guide will help you get up and running in just a few minutes.
 
-## 1. Access the Platform
+### 1. Access the Platform
 
 Visit [Syncora Platform](https://app.syncora.ai) to access our web application.
 
-## 2. Create Your Account
+### 2. Create Your Account
 
-### Sign Up
+#### Sign Up
 
 1. Click the **"Sign Up"** button on the homepage
 2. Enter your email address
@@ -22,26 +26,26 @@ Visit [Syncora Platform](https://app.syncora.ai) to access our web application.
 4. Verify your email address
 5. Complete your profile setup
 
-### Login
+#### Login
 
 1. Navigate to the login page
 2. Enter your email and password
 3. Click **"Sign In"**
 
-## 3. Generate Your First API Key
+### 3. Generate Your First API Key
 
 1. After logging in, go to **Settings** → **API Keys**
 2. Click **"Generate New API Key"**
 3. Give your key a descriptive name
 4. Copy the generated key and store it securely
 
-## 4. Install the SDK
+### 4. Install the SDK
 
 ```bash
 npm install @syncora/sdk
 ```
 
-## 5. Create Your First Synthetic Dataset
+### 5. Create Your First Synthetic Dataset
 
 ```javascript
 import { SyncoraClient } from "@syncora/sdk";
@@ -66,9 +70,9 @@ const dataset = await client.generateData({
 console.log(dataset);
 ```
 
-## Next Steps
+## What's Next?
 
-- Learn about [AI concepts](/concepts) and synthetic data generation
-- Explore our [platform features](/platform-overview)
-- Check out [best practices](/best-practices) for optimal results
-- Integrate with our [SDK](/features/sdk)
+- [First Steps](/docs/quick-start/first-steps): Create your first project and explore features
+- [Next Steps](/docs/quick-start/next-steps): Advanced configurations and best practices
+- [API Reference](/api): Complete API documentation
+- [Community Forum](https://community.syncora.ai): Get help and share knowledge

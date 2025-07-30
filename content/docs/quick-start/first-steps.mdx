@@ -1,0 +1,59 @@
+---
+title: First Steps
+description: Create your first project and explore features
+group: QUICK START
+---
+
+# First Steps
+
+Now that you've set up your account, let's create your first project and explore the platform's features.
+
+## Create Your First Project
+
+1. From the dashboard, click **"New Project"**
+2. Enter a name for your project (e.g., "My First Project")
+3. Select a template or start from scratch
+4. Click **"Create Project"**
+
+## Explore the Dashboard
+
+### Project Overview
+- View key metrics and statistics
+- Monitor recent activity
+- Access quick actions
+
+### Navigation
+- **Datasets**: Manage your synthetic data
+- **Generators**: Create and manage data generators
+- **API**: Access API documentation and keys
+- **Settings**: Configure project settings
+
+## Generate Your First Dataset
+
+1. Navigate to **Datasets**
+2. Click **"Create Dataset"**
+3. Choose a data source or use the schema editor
+4. Configure generation settings
+5. Click **"Generate"**
+
+```javascript
+// Example: Generate a simple user dataset
+const users = await client.generateData({
+  schema: {
+    users: {
+      fields: {
+        id: "uuid",
+        name: "fullName",
+        email: "email",
+        createdAt: "date"
+      },
+      count: 1000
+    }
+  }
+});
+```
+
+## Next Steps
+- [Learn about data generation options](/docs/quick-start/next-steps)
+- [Explore advanced features](/docs/features)
+- [Join our community](https://community.syncora.ai) for support

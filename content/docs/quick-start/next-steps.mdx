@@ -1,0 +1,80 @@
+---
+title: Next Steps
+description: Advanced configurations and best practices
+group: QUICK START
+---
+
+# Next Steps
+
+Now that you're familiar with the basics, let's explore advanced configurations and best practices.
+
+## Advanced Data Generation
+
+### Custom Data Types
+Define custom data types for specific use cases:
+
+```javascript
+const customTypes = {
+  productCategory: {
+    values: ["Electronics", "Clothing", "Home", "Books"]
+  },
+  price: {
+    min: 10,
+    max: 1000,
+    precision: 2
+  }
+};
+```
+
+### Relationships Between Tables
+Create related data across multiple tables:
+
+```javascript
+const relatedData = await client.generateData({
+  schema: {
+    users: {
+      fields: {
+        id: "uuid",
+        name: "fullName"
+      },
+      count: 100
+    },
+    orders: {
+      fields: {
+        id: "uuid",
+        userId: {
+          type: "reference",
+          table: "users",
+          field: "id"
+        },
+        amount: "number"
+      },
+      count: 500
+    }
+  }
+});
+```
+
+## Performance Optimization
+
+1. **Batch Processing**: Process data in smaller batches for large datasets
+2. **Caching**: Implement caching for frequently accessed data
+3. **Parallel Processing**: Use async/await with Promise.all for independent operations
+
+## Best Practices
+
+### Data Quality
+- Always validate generated data
+- Use constraints to maintain data integrity
+- Implement data quality checks
+
+### Security
+- Rotate API keys regularly
+- Follow the principle of least privilege
+- Monitor API usage
+
+## Getting Help
+
+- [API Reference](/api)
+- [Community Forum](https://community.syncora.ai)
+- [Contact Support](mailto:support@syncora.ai)
