@@ -1,10 +1,15 @@
 'use client';
 
+interface CardItem {
+  name: string;
+  href?: string;
+}
+
 interface CardProps {
   href: string;
   icon: React.ReactNode;
   title: string;
-  items: string[];
+  items: (string | CardItem)[];
 }
 
 export default function CardGrid({ href, icon, title, items }: CardProps) {
@@ -24,14 +29,29 @@ export default function CardGrid({ href, icon, title, items }: CardProps) {
           </a>
         </div>
         <ul className="list-disc list-inside text-sm text-gray-700 dark:text-gray-400 flex-1 space-y-2 pl-2">
-          {items.map((item, i) => (
-            <li key={i} className="relative cursor-pointer group/item">
+          {items.map((item, i) => {
+            const name = typeof item === 'string' ? item : item.name;
+            const href = typeof item === 'string' ? undefined : item.href;
+
+            const content = (
               <span className="relative">
-                {item}
+                {name}
                 <span className="absolute left-0 -bottom-1 h-0.5 w-0 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full transition-all duration-800 group-hover/item:w-full"></span>
               </span>
-            </li>
-          ))}
+            );
+
+            return (
+              <li key={i} className="relative cursor-pointer group/item">
+                {href ? (
+                  <a href={href} className="no-underline text-gray-700 dark:text-gray-400">
+                    {content}
+                  </a>
+                ) : (
+                  content
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

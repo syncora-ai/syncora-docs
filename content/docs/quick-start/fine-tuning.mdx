@@ -1,5 +1,28 @@
 ---
-title: Fine Tuning
+title: For Fine Tuning
 description: Create your first project and explore features
 group: QUICK START
 ---
+
+## MOSTLY AI Components
+
+The following table lists the key components of the MOSTLY AI platform:
+
+| Component | Description | Type |
+|-----------|-------------|------|
+| mostly-core | Component that reads metadata and analyzes data sources and destinations. | Service |
+| mostly-app | Contains the backend and public APIs of MOSTLY AI. | Service |
+| mostly-keycloak | Keycloak is an open-source identity management, authentication, and authorization tool. | Service |
+| mostly-coordinator | Coordinates execution of tasks on the main AI engine. | Service |
+| mostly-core-gpu | Service for running AI tasks on GPU nodes. | Service |
+| mostly-postgresql | Database instance for app, coordinator, and Keycloak. | Service |
+| mostly-ui | Frontend of MOSTLY AI, reachable over port 8080. | Service |
+| mostly-assistant-broker | Manages communication between LLM, JEG Kernels, and the app. | Service |
+| mostly-jeg | Jupyter Enterprise Gateway to manage multiple assistant Python sessions. | Service |
+| mostly-jeg-kernel | Jupyter Python Kernel used in each assistant session. | Service |
+| mostly-troubleshooter | Troubleshooting tool for MOSTLY AI deployments. | Service |
+| mostly-backup | Backup service for MOSTLY AI. | Service |
+| mostly-docs | Documentation service that provides guides and API documentation. | Service |
+| mostly-ai-haproxy | Automatic load balancer and ingress management. | Service |
+| mostly-ai-minio | Shared storage service. | Service |
+| mostly-core-probe-api | Service for live-probing generators. | Service |

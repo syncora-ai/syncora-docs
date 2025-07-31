@@ -7,18 +7,24 @@ import CardGrid from "@/components/CardGrid"
 import { FaRobot, FaTable, FaMagic, FaDatabase, FaRocket, FaTerminal } from "react-icons/fa";
 import { CpuIcon } from "lucide-react";
 
-<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+<div className="md:col-span-2 grid grid-cols-3 md:grid-cols-3 gap-14">
 <CardGrid
   href="/quick-start"
   icon={<CpuIcon className="inline-block w-5 h-5 mr-2" />}
   title="Quick Start"
-  items={["Model creators", "Data consumers", "Fine-tuning LLMs"]}
+  items={[{name: "Model creators", href: "./quick-start/model-creators"}, "Data consumers", "Fine-tuning LLMs"]}
 />
 <CardGrid
   href="/assistant"
   icon={<FaRobot className="inline-block w-5 h-5 mr-2" />}
   title="Assistant"
-  items={["Configuration", "Manage chats", "Manage artifacts", "Prompt examples", "Python sessions"]}
+  items={[{name: "Configuration", href: "/docs/assistant/configuration"}, "Manage chats", "Manage artifacts", "Prompt examples", "Python sessions"]}
+/>
+<CardGrid
+  href="/more-tools"
+  icon={<FaTerminal className="inline-block w-5 h-5 mr-2" />}
+  title="More Tools"
+  items={[{name: "REST API", href: "/docs/rest-api"}, "Synthetic Data SDK", "Synthetic Data Quality Assurance"]}
 />
 <CardGrid
   href="/features/tabular"
@@ -44,10 +50,5 @@ import { CpuIcon } from "lucide-react";
   title="Sources and Destinations"
   items={["Databases", "Cloud object storage", "Configure a data source", "Configure a data destination"]}
 />
-<CardGrid
-  href="/more-tools"
-  icon={<FaTerminal className="inline-block w-5 h-5 mr-2" />}
-  title="More Tools"
-  items={["REST API", "Synthetic Data SDK", "Synthetic Data Quality Assurance"]}
-/>
+
 </div>
