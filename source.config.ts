@@ -5,7 +5,7 @@ export const docs = defineDocs({
     schema: frontmatterSchema
   },
   meta: {
-    schema: metaSchema
+    schema: metaSchema,
   }
 });
 

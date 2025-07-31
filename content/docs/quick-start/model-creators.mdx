@@ -1,59 +1,103 @@
 ---
-title: Model Creators
-description: Create your first project and explore features
-group: QUICK START
+title: "For Model Creator"
+
 ---
 
-# Model Creators
+import { Steps, Step } from 'fumadocs-ui/components/steps';
+import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
+import { Callout } from 'fumadocs-ui/components/callout';
 
-Now that you've set up your account, let's create your first project and explore the platform's features.
 
-## Create Your First Project
+As a Model Creator, you carry the torch of democratizing data within and outside of your organization! Here is how you can quickly train a new generator on original tabular data. You can then transfer the generator to an organization and make it public. Peers, colleagues, and third parties can then use it to create privacy-safe synthetic data.
 
-1. From the dashboard, click **"New Project"**
-2. Enter a name for your project (e.g., "My First Project")
-3. Select a template or start from scratch
-4. Click **"Create Project"**
+<Steps>
+  <Step>
+    ### Step 1: Train a Generator
 
-## Explore the Dashboard
+    You can train a generator using the Syncora UI, the AI Assistant, or the Python SDK.
 
-### Project Overview
-- View key metrics and statistics
-- Monitor recent activity
-- Access quick actions
+    <Tabs items={['Syncora UI', 'AI Assistant', 'Python SDK']}>
+      <Tab value="Syncora UI">
+        1. In Syncora, select the **Generators** page.
+        2. Click **+ New generator**.
 
-### Navigation
-- **Datasets**: Manage your synthetic data
-- **Generators**: Create and manage data generators
-- **API**: Access API documentation and keys
-- **Settings**: Configure project settings
+        ![New Generator](/images/image.png)
+        3. Select **Upload file**, browse for a dataset, and click **Proceed**.
 
-## Generate Your First Dataset
+        <Callout title="Need a dataset?">
+          If you don't have one, you can download the [UCI Adult income dataset](https://docs.mostly.ai/datasets/us-census-income.csv.gz).
+        </Callout>
 
-1. Navigate to **Datasets**
-2. Click **"Create Dataset"**
-3. Choose a data source or use the schema editor
-4. Configure generation settings
-5. Click **"Generate"**
+        4. At the Data configuration step, click **Configure models**.
+        5. At the Model configuration step, click **Start training**.
+      </Tab>
+      <Tab value="AI Assistant">
+        1. Start a new chat with the Assistant by clicking **New chat**.
+        2. Prompt the Assistant to connect to a dataset or upload one.
+        ```
+        Connect to the Berka dataset and briefly describe this resource.
+        ```
+        3. Prompt the Assistant to create a generator with the defined resource.
+        ```
+        Configure a generator that will produce data which follows the statistical patterns of the least active accounts in the dataset.
+        ```
+      </Tab>
+      <Tab value="Python SDK">
+        1. **Install the Syncora SDK**.
+You can use the SDK in **Local mode** (using your machine's resources) or **Client mode** (connecting to a remote Syncora instance).
 
-```javascript
-// Example: Generate a simple user dataset
-const users = await client.generateData({
-  schema: {
-    users: {
-      fields: {
-        id: "uuid",
-        name: "fullName",
-        email: "email",
-        createdAt: "date"
-      },
-      count: 1000
-    }
-  }
-});
-```
+        2. **Create your generator** using a dataset, start its training, and wait for it to finish.
 
-## Next Steps
-- [Learn about data generation options](/docs/quick-start/next-steps)
-- [Explore advanced features](/docs/features)
-- [Join our community](https://community.syncora.ai) for support
+        **Local Mode Example:**
+        ```python
+        import pandas as pd
+        from syncora import SyncoraClient
+
+        df = pd.read_csv("https://docs.mostly.ai/datasets/us-census-income.csv.gz")
+        client = SyncoraClient(local=True)
+        generator = client.train(data=df, start=True, wait=True)
+        ```
+
+        **Client Mode Example:**
+        ```python
+        import pandas as pd
+        from syncora import SyncoraClient
+
+        df = pd.read_csv("https://docs.mostly.ai/datasets/us-census-income.csv.gz")
+        client = SyncoraClient(base_url="https://app.syncora.ai", api_key="YOUR_API_KEY")
+        generator = client.train(data=df, start=True, wait=True)
+        ```
+      </Tab>
+    </Tabs>
+  </Step>
+  <Step>
+    ### Step 2: Share the Generator
+
+    After the generator training completes, you can share it with your organization so others can generate synthetic data.
+
+    1. In Syncora, open the generator from the **Generators** page.
+    2. Click **Share**.
+    3. Select the organization to share the resource with.
+
+    <Callout type="info" title="Result">
+      The generator is now available to all members of your organization.
+    </Callout>
+  </Step>
+  <Step>
+    ### Step 3: Make the Generator Public
+
+    Generators capture only the statistical characteristics of the original data, making them safe to share publicly.
+
+    1. Open the generator from the **Generators** page.
+    2. Click **Share**.
+    3. Select **Public** and click **Save**.
+
+    <Callout type="info" title="Result">
+      Public generators are listed on your organization’s profile page and are available to all logged-in users.
+    </Callout>
+  </Step>
+</Steps>
+
+## What's Next?
+
+Now that you've created and shared a generator, see the [Quick Start for Data Consumers](/docs/quick-start/data-consumers) to learn how to generate synthetic data.

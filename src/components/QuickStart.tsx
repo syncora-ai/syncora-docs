@@ -35,7 +35,7 @@ export function QuickStart() {
                         key={section.href}
                         href={section.href}
                         className="group relative overflow-hidden
-             bg-white dark:bg-gradient-to-br dark:from-[#1e1e2f] dark:to-[#2a2a40]
+             bg-white dark:bg-[#191919]
              p-6 rounded-2xl shadow-lg
              hover:shadow-xl transition-all duration-300 hover:-translate-y-1 no-underline"
                     >

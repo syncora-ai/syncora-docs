@@ -1,10 +1,27 @@
 ---
 title: Quick Start
 description: Get started with Syncora in minutes
-group: QUICK START
 ---
 
-import { QuickStart } from '@/components/QuickStart';
+import { Cards, Card } from 'fumadocs-ui/components/card';
 
-<QuickStart />
+
+## Quick starts for Model creators and Data consumers
+
+Model creators are the guardians of original data and own the training of new AI models that make data privacy-safe for further utility.
+
+Data consumers, through Syncora, have easy access to synthetic data they can analyze, use for downstream machine learning (ML) tasks, and share freely, without the privacy concerns.
+
+<Cards>
+  <Card title="Model Creators" href="./quick-start/model-creators" />
+  <Card title="Data Consumers" href="./quick-start/data-consumers" />
+</Cards>
+
+## Quick start for fine-tuning LLMs
+
+Syncora can easily integrate with any LLM for further fine-tuning on tabular datasets that contain columns with unstructured text data.
+
+<Cards>
+  <Card title="Fine-tune LLMs" href="./quick-start/fine-tuning" />
+</Cards>
 

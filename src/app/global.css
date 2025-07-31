@@ -2,6 +2,14 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+:root {
+    --color-fd-background: hsl(0, 0%, 100%);
+}
+
+.dark {
+    --color-fd-background: hsl(0, 0%, 0%);
+}
+
 @keyframes rotateBorder {
     0% {
         background-position: 0% 50%;

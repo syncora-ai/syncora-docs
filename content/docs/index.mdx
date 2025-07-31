@@ -1,8 +1,53 @@
 ---
-title: "Home"
-description: "Overview of Syncora's documentation"
+title: "Welcome"
+description: "Explore Syncora features"
 ---
 
 import CardGrid from "@/components/CardGrid"
+import { FaRobot, FaTable, FaMagic, FaDatabase, FaRocket, FaTerminal } from "react-icons/fa";
+import { CpuIcon } from "lucide-react";
 
-<CardGrid />
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+<CardGrid
+  href="/quick-start"
+  icon={<CpuIcon className="inline-block w-5 h-5 mr-2" />}
+  title="Quick Start"
+  items={["Model creators", "Data consumers", "Fine-tuning LLMs"]}
+/>
+<CardGrid
+  href="/assistant"
+  icon={<FaRobot className="inline-block w-5 h-5 mr-2" />}
+  title="Assistant"
+  items={["Configuration", "Manage chats", "Manage artifacts", "Prompt examples", "Python sessions"]}
+/>
+<CardGrid
+  href="/features/tabular"
+  icon={<FaTable className="inline-block w-5 h-5 mr-2" />}
+  title="Tabular Synthetic Data"
+  items={["Multi-table synthetic data", "Subject tables", "Linked tables", "Context foreign key", "Time-series and events data"]}
+/>
+<CardGrid
+  href="/generators"
+  icon={<FaMagic className="inline-block w-5 h-5 mr-2" />}
+  title="Generators"
+  items={["Train a new generator", "Live-probe a generator", "Set table relationships", "Set encoding types", "Improve model accuracy", "Speed up training", "Fine-tune privacy mechanisms"]}
+/>
+<CardGrid
+  href="/synthetic-datasets"
+  icon={<FaRocket className="inline-block w-5 h-5 mr-2" />}
+  title="Synthetic Datasets"
+  items={["Generate synthetic datasets", "Rebalance columns", "Data imputation", "Deliver to DB/cloud", "Seeded generation", "Fair synthetic data"]}
+/>
+<CardGrid
+  href="/sources-destinations"
+  icon={<FaDatabase className="inline-block w-5 h-5 mr-2" />}
+  title="Sources and Destinations"
+  items={["Databases", "Cloud object storage", "Configure a data source", "Configure a data destination"]}
+/>
+<CardGrid
+  href="/more-tools"
+  icon={<FaTerminal className="inline-block w-5 h-5 mr-2" />}
+  title="More Tools"
+  items={["REST API", "Synthetic Data SDK", "Synthetic Data Quality Assurance"]}
+/>
+</div>

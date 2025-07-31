@@ -1,34 +1,8 @@
 {
   "pages": [
     "index",
-    {
-      "type": "category",
-      "title": "Quick Start",
-      "items": [
-        "quick-start",
-        "quick-start/model-creators",
-        "quick-start/data-consumers",
-        "quick-start/fine-tuning"
-      ]
-    },
-    {
-      "type": "category",
-      "title": "Core Concepts",
-      "items": [
-        "concepts",
-        "concepts/data-generation",
-        "concepts/synthetic-models"
-      ]
-    },
-    {
-      "type": "category",
-      "title": "Features",
-      "items": [
-        "features",
-        "features/sdk",
-        "features/api"
-      ]
-    },
-    "contribute-earn"
+    "quick-start",
+    "concepts",
+    "features"
   ]
 }
